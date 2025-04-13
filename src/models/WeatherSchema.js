@@ -1,0 +1,19 @@
+import { z } from 'zod';
+
+export const Weather = z.object({
+  latitude: z.number(),
+  longitude: z.number(),
+  generationtime_ms: z.number(),
+  utc_offset_seconds: z.number(),
+  timezone: z.string(),
+  timezone_abbreviation: z.string(),
+  elevation: z.number(),
+  daily_units: z.object({
+    time: z.string(),
+    temperature_2m_mean: z.string()
+  }),
+  daily: z.object({
+    time: z.array(z.string()),
+    temperature_2m_mean: z.array(z.number())
+  })
+});
