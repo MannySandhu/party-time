@@ -9,7 +9,7 @@
     "start": "cross-env NODE_ENV=production src/server.js"
   },
   "keywords": [],
-  "author": "Jace",
+  "author": "MJS",
   "license": "ISC",
   "type": "module",
   "jest": {
@@ -21,6 +21,7 @@
     "axios": "^1.8.4",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
+    "mongoose": "^8.13.2",
     "node-cache": "^5.1.2",
     "winston": "^3.17.0",
     "zod": "^3.24.2"
