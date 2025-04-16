@@ -10,7 +10,7 @@ dotenv.config({
 
 const envSchema = z.object({
     MONGODB_URI: z.string().url(),
-    PORT: z.string().regex(/^\d+$/)
+    PORT: z.string().regex(/^\d+$/).default('3000')
 })
 
 const result = envSchema.safeParse(process.env);
@@ -20,8 +20,18 @@ if(!result.success){
     process.exit(1);
 }
 
-const PORT = process.env.PORT || 3000;
+const startServer = async () => {
+    try {
+        await mongoose.connect(result.data.MONGODB_URI);
+        logger.info('MongoDB connected');
 
-app.listen(PORT, () => {
-    logger.info(`Starting server on ${PORT}`);
-})
+        app.listen(result.data.PORT, () => {
+            logger.info(`Server running on ${result.data.PORT}`);
+        })
+    } catch (error) {
+        logger.error('MongoDB connection failed', error);
+        process.exit(1);        
+    }   
+};
+
+startServer();
