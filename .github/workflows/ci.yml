@@ -10,6 +10,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      OPEN_MATEO_WEATHER_URL: ${{ vars.OPEN_MATEO_WEATHER_URL }}
+      NODE_ENV: test
+      PORT: 3000
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -24,6 +30,9 @@ jobs:
 
     - name: Run ESLint
       run: npx eslint .
+
+    - name: Print environment variables
+      run: printenv | grep -i 'MONGODB\|OPEN_MATEO'
 
     - name: Run Tests
       run: npm test
