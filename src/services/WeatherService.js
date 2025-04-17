@@ -7,7 +7,7 @@ import {
     OpenMeteoWeatherValidationError,
     WeatherCacheValidationError
 } from "../lib/errors/index.js"
-const { OPEN_MATEO_WEATHER_URL } = env;
+const OPEN_MATEO_WEATHER_URL = env.OPEN_MATEO_WEATHER_URL ?? 'https://api.open-meteo.com/v1/forecast';
 
 export const getWeatherFromOpenMateo = async (lat, lon, skipCache) => {
     

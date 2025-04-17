@@ -1,6 +1,6 @@
 import request from "supertest";
 import nock from "nock";
-import app from "../src/app";
+import app from "../../src/app";
 
 describe('/api/v1/weather', () => {
     describe('GET', () => {
