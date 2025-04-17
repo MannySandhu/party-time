@@ -1,3 +1,4 @@
+import { env } from "../config/env.js";
 import axios from "axios";
 import CacheService from "./CacheService.js";
 import { Weather } from "../models/WeatherSchema.js"
@@ -6,9 +7,10 @@ import {
     OpenMeteoWeatherValidationError,
     WeatherCacheValidationError
 } from "../lib/errors/index.js"
+const { OPEN_MATEO_WEATHER_URL } = env;
 
 export const getWeatherFromOpenMateo = async (lat, lon, skipCache) => {
-
+    
     const skip = skipCache === 'true';
     const cacheKey = `${lat},${lon}`;
 
@@ -24,14 +26,15 @@ export const getWeatherFromOpenMateo = async (lat, lon, skipCache) => {
 
     try {
         logger.info(`Making HTTP request to OPEN MATEO.`);
-        const response = await axios.get(process.env.OPEN_MATEO_WEATHER_URL, {
+        const response = await axios.get(OPEN_MATEO_WEATHER_URL, {
             params: {
                 latitude: lat,
                 longitude: lon,
-                daily: "temperature_2m_mean"
+                daily: "temperature_2m_mean,precipitation_sum,windspeed_10m_max",
+                timezone: 'GMT'
             }
         });
-
+        
         const result = Weather.safeParse(response.data);
         CacheService.set(cacheKey, result.data);
         logger.info(`Cached response.`);
