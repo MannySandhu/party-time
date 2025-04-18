@@ -1,7 +1,7 @@
 import { env } from "../config/env.js";
 import axios from "axios";
 import CacheService from "./CacheService.js";
-import { Weather } from "../models/WeatherSchema.js"
+import { Weather } from "../models/weather.schema.js"
 import logger from "../lib/logger.js";
 import {
     OpenMeteoWeatherValidationError,
