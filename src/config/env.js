@@ -6,11 +6,13 @@ dotenv.config({
     path: `.env.${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}`
 });
 
-const envSchema = z.object({
+export const envSchema = z.object({
     MONGODB_URI: z.string().url(),
     OPEN_MATEO_WEATHER_URL: z.string().url(),
+    GOOGLE_PLACES_API_URL: z.string().url(),
+    GOOGLE_PLACES_API_KEY: z.string(),
     PORT: z.string().regex(/^\d+$/).default('3000')
-})
+  });
 
 const result = envSchema.safeParse(process.env);
 

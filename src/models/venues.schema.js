@@ -1,0 +1,27 @@
+import { z } from "zod";
+
+const Venues = z.object({
+  business_status: z.string(),
+  geometry: z.object({
+    location: z.object({
+      lat: z.number(),
+      lng: z.number()
+    })
+  }),
+  name: z.string(),
+  vicinity: z.string(),
+  place_id: z.string(),
+  opening_hours: z.object({
+    open_now: z.boolean()
+  }).optional(),
+  rating: z.number().optional(),
+  user_ratings_total: z.number().optional(),
+  photos: z.array(z.object({
+    photo_reference: z.string()
+  })).optional()
+});
+
+export const VenuesCollectionSchema = z.object({
+  results: z.array(Venues),
+  status: z.string()
+});

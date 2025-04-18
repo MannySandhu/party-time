@@ -1,4 +1,3 @@
-import { response } from "express";
 import logger from "../lib/logger.js";
 
 export const getEvent = async (req, res) => {
