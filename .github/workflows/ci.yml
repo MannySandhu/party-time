@@ -13,6 +13,8 @@ jobs:
     env:
       MONGODB_URI: ${{ secrets.MONGODB_URI }}
       OPEN_MATEO_WEATHER_URL: ${{ vars.OPEN_MATEO_WEATHER_URL }}
+      GOOGLE_PLACES_API_URL: ${{ vars.GOOGLE_PLACES_API_URL }}
+      GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
       NODE_ENV: test
       PORT: 3000
 
