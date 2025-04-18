@@ -1,5 +1,5 @@
 GET https://maps.googleapis.com/maps/api/place/nearbysearch/json
   ?location=51.5072,-0.1276
-  &radius=3000
+  &radius=300
   &type=bar
-  &key=AIzaSyD6AmO2bKmYSCKnCRundTvKxA2XmP1JEMI
+  &key=
