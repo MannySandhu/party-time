@@ -34,7 +34,7 @@ jobs:
       run: npx eslint .
 
     - name: Print environment variables
-      run: printenv | grep -i 'MONGODB\|OPEN_MATEO'
+      run: printenv | grep -i 'ENV VARS / SECRETS'
 
     - name: Run Tests
       run: npm test
