@@ -7,4 +7,3 @@ coverage/
 .vscode/
 *.log
 .DS_Store
-.rest
