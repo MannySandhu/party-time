@@ -4,9 +4,9 @@ import logger from "../lib/logger.js";
 export const getVenues = async (req, res) => {
     try {
         logger.info(`GET request to /api/v1/venue.`);
-        const { location, radius, type } = req.query;
-        
-        const response = await getPlacesFromGooglePlacesAPI(location, radius, type);
+        const { location, radius, type, skipCache } = req.query;
+
+        const response = await getPlacesFromGooglePlacesAPI(location, radius, type, skipCache);
         res.status(response.status || 200).json(response.data);
 
     } catch (error) {
