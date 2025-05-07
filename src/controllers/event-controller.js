@@ -26,7 +26,6 @@ export const createEvent = async (req, res, next) => {
         const validatedEvent = EventSchema.safeParse(req.body);
 
         if (!validatedEvent.success) {
-            console.error('Zod validation error:', validatedEvent.error.format());
             throw new CreateEventValidationError();
         }
 

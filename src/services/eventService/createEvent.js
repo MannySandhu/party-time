@@ -38,7 +38,7 @@ const createUserEvent = async (event) => {
         }
 
         logger.info(`Event created: ${createdEvent.data.eventName} at ${createdEvent.data.location} by user ${createdEvent.data.userId}`);
-        return { 'data': createdEvent, 'status': 200 };
+        return { 'data': createdEvent.data, 'status': 200 };
 
     } catch (err) {
         const status = err.response?.status || 500;

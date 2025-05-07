@@ -1,10 +1,12 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
+// Coordinates subdocument
 const CoordinatesSchema = new mongoose.Schema({
   lat: { type: Number, required: true },
   lng: { type: Number, required: true }
 }, { _id: false });
 
+// Weather subdocument (OpenMeteo)
 const WeatherSchema = new mongoose.Schema({
   latitude: Number,
   longitude: Number,
@@ -26,6 +28,7 @@ const WeatherSchema = new mongoose.Schema({
   }
 }, { _id: false });
 
+// Venue subdocument (Google Places)
 const VenueSchema = new mongoose.Schema({
   business_status: String,
   geometry: {
@@ -47,19 +50,20 @@ const VenueSchema = new mongoose.Schema({
   }]
 }, { _id: false });
 
+// Event schema
 const EventSchema = new mongoose.Schema({
-  userId: { type: String, required: true },
   eventName: { type: String, required: true },
   location: { type: String, required: true },
   coordinates: { type: CoordinatesSchema, required: true },
-  startTime: { type: String, required: true },
-  endTime: { type: String, required: true },
+  radius: { type: Number, required: true },
   groupSize: { type: Number, required: true },
   preferences: [{ type: String, enum: ["bar", "pub", "club", "restaurant"], required: true }],
-  weather: { type: WeatherSchema, required: true },
-  venues: { type: [VenueSchema], required: true },
-  cacheKey: { type: String, required: false },
-  finalized: { type: Boolean, default: false }
+  date: { type: String, required: true },
+  startTime: { type: String, required: true },
+  endTime: { type: String, required: true },
+  finalized: { type: Boolean, default: false },
+  weather: { type: WeatherSchema },
+  venues: { type: [VenueSchema] }
 }, { timestamps: true });
 
-export const EventModel = mongoose.model("Event", EventSchema);
+export const EventModel = mongoose.model('Event', EventSchema);

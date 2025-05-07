@@ -1,48 +1,23 @@
-const saveUserEvent = async () => {
+import logger from "../../lib/logger.js";
+import { EventModel } from "../../models/event.model.js";
 
-    // const {
-    //     coordinates,
-    //     radius,
-    //     preferences
-    // } = event;
+const saveUserEvent = async (event) => {
 
-    // try {
-    //     const weatherResponse = await getWeatherFromOpenMateo(
-    //         coordinates
-    //     );
-    //     const weatherResult = EventSchema.safeParse(weatherResponse.data);
+    try {
+        const eventModel = new EventModel(event.data);
+        await eventModel.validate();
+        const savedEvent = await eventModel.save();
 
-    //     const venuesResponse = await getPlacesFromGooglePlacesAPI(
-    //         coordinates,
-    //         radius,
-    //         preferences
-    //     );
-    //     const venuesResult = EventSchema.safeParse(venuesResponse.data);
+        logger.info(`Event saved: "${savedEvent.eventName}" (ID: ${savedEvent._id}) for ${savedEvent.location}`);
+        return { 'data': savedEvent, 'status': 201 };
 
-    //     const event = {
-    //         userId: event.userId,
-    //         eventName: event.eventName,
-    //         location: event.location,
-    //         coordinates: { lat: coordinates.lat, lng: coordinates.lon },
-    //         startTime: event.startTime,
-    //         endTime: event.endTime,
-    //         groupSize: event.groupSize,
-    //         preferences: event.preferences,
-    //         weather: weatherResult.data,
-    //         venues: venuesResult.data,
-    //         finalized: event.finalized
-    //     };
-
-    //     logger.info(`Event created.`);
-    //     return { 'data': event, 'status': 200 };
-
-    // } catch (err) {
-    //     const status = err.response?.status || 500;
-    //     const message = err.response?.data?.message || err.message || 'Failed to create event.';
-    //     const error = new Error(message);
-    //     error.statusCode = status;
-    //     throw error;
-    // }
+    } catch (err) {
+        const status = err.response?.status || 500;
+        const message = err.response?.data?.message || err.message || 'Failed to save event.';
+        const error = new Error(message);
+        error.statusCode = status;
+        throw error;
+    }
 }
 
 export default saveUserEvent;
