@@ -1,6 +1,6 @@
 import { env } from "../config/env.js";
 import axios from "axios";
-import { WeatherSchema } from "../models/weather.schema.js"
+import { OpenMateoWeatherSchema } from "../models/weather.schema.js"
 import logger from "../lib/logger.js";
 import { OpenMeteoWeatherValidationError } from "../lib/errors/index.js"
 const OPEN_MATEO_WEATHER_URL = env.OPEN_MATEO_WEATHER_URL ?? 'https://api.open-meteo.com/v1/forecast';
@@ -20,7 +20,7 @@ export const getWeatherFromOpenMateo = async (coordinates) => {
             }
         });
 
-        const result = WeatherSchema.safeParse(response.data);
+        const result = OpenMateoWeatherSchema.safeParse(response.data);
         if (!result.success) {
             throw new OpenMeteoWeatherValidationError();
         }

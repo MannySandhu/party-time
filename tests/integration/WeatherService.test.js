@@ -1,6 +1,6 @@
 import nock from "nock";
 import { getWeatherFromOpenMateo } from "../../src/services/WeatherService";
-import { WeatherSchema } from "../../src/models/weather.schema";
+import { OpenMateoWeatherSchema } from "../../src/models/weather.schema";
 
 describe('Weather Service', () => {
   describe('GET', () => {
@@ -54,7 +54,7 @@ describe('Weather Service', () => {
     
       const coordinates = { lat: 51.4, lon: -0.22 }
       const result = await getWeatherFromOpenMateo(coordinates);
-      const validated = WeatherSchema.safeParse(result.data);
+      const validated = OpenMateoWeatherSchema.safeParse(result.data);
 
       expect(result.status).toBe(200);
       expect(result.data).toEqual(validated.data);
@@ -65,12 +65,12 @@ describe('Weather Service', () => {
     //   const coordinates = { lat: 51.4, lon: -0.22 }
     //   const result = await getWeatherFromOpenMateo(coordinates);
     //   const invalidResult = { ...result.data, latitude: undefined }
-    //   const validated = WeatherSchema.safeParse(invalidResult.data);
+    //   const validated = OpenMateoWeatherSchema.safeParse(invalidResult.data);
 
     //   expect(validated.success).toBe(false);
 
     //   try {
-    //     expect(() => WeatherSchema.parse(invalidResult.data)).toThrow();
+    //     expect(() => OpenMateoWeatherSchema.parse(invalidResult.data)).toThrow();
     //   } catch (error) {
     //     expect(error.status).toBe(400);
     //     expect(error.message).toBe("Weather data from Open-Meteo API failed validation");

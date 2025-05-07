@@ -2,8 +2,6 @@ import logger from '../../lib/logger.js';
 import { getWeatherFromOpenMateo } from "../WeatherService.js";
 import { getPlacesFromGooglePlacesAPI } from "../VenuesService.js";
 import { EventSchema } from "../../models/event.schema.js";
-import { WeatherSchema } from '../../models/weather.schema.js';
-import { VenuesCollectionSchema } from '../../models/venues.schema.js';
 import { CreateEventValidationError } from '../../lib/errors/index.js';
 
 const createUserEvent = async (event) => {
@@ -13,15 +11,13 @@ const createUserEvent = async (event) => {
         const weatherResponse = await getWeatherFromOpenMateo(
             coordinates
         );
-        const weatherResult = WeatherSchema.safeParse(weatherResponse.data);
 
         const venuesResponse = await getPlacesFromGooglePlacesAPI(
             coordinates,
             event.data.radius,
             event.data.preferences
         );
-        const venuesResult = VenuesCollectionSchema.safeParse(venuesResponse.data);
-
+        
         const createdEvent = EventSchema.safeParse({
             eventName: event.data.eventName,
             location: event.data.location,
@@ -32,13 +28,12 @@ const createUserEvent = async (event) => {
             endTime: event.data.endTime,
             groupSize: event.data.groupSize,
             preferences: event.data.preferences,
-            weather: weatherResult.data,
-            venues: venuesResult.data,
+            weather: weatherResponse.data,
+            venues: venuesResponse.data.results,
             finalized: false
         });
 
         if(!createdEvent.success){
-            console.error(createdEvent.error.format());
             throw new CreateEventValidationError();
         }
 

@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { OpenMateoWeatherSchema } from './weather.schema.js';
+import { VenuesSchema } from './venues.schema.js';
 
 export const EventSchema = z.object({
   eventName: z.string().min(1),
@@ -13,5 +15,8 @@ export const EventSchema = z.object({
   date: z.string().min(1),
   startTime: z.string().min(1),
   endTime: z.string().min(1),
-  finalized: z.boolean().optional()
+  finalized: z.boolean().optional(),
+
+  weather: OpenMateoWeatherSchema.optional(),
+  venues: z.array(VenuesSchema).optional()
 });

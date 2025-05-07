@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const VenuesSchema = z.object({
+export const VenuesSchema = z.object({
   business_status: z.string(),
   geometry: z.object({
     location: z.object({
@@ -21,7 +21,8 @@ const VenuesSchema = z.object({
   })).optional()
 });
 
-export const VenuesCollectionSchema = z.object({
+// Google Places API Wrapper
+export const GooglePlacesAPISchema = z.object({
   results: z.array(VenuesSchema),
   status: z.string()
 });

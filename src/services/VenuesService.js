@@ -1,6 +1,6 @@
 import { env } from "../config/env.js";
 import axios from "axios";
-import { VenuesCollectionSchema } from "../models/venues.schema.js"
+import { GooglePlacesAPISchema } from "../models/venues.schema.js"
 import logger from "../lib/logger.js";
 import { GooglePlacesApiValidationError } from "../lib/errors/index.js"
 const GOOGLE_PLACES_API_URL = env.GOOGLE_PLACES_API_URL ?? 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
@@ -19,7 +19,7 @@ export const getPlacesFromGooglePlacesAPI = async (coordinates, radius, preferen
             }
           });
         
-        const result = VenuesCollectionSchema.safeParse(response.data);
+        const result = GooglePlacesAPISchema.safeParse(response.data);
         if (!result.success) {
             throw new GooglePlacesApiValidationError();
         }

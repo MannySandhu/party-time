@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const WeatherSchema = z.object({
+export const OpenMateoWeatherSchema = z.object({
   latitude: z.number(),
   longitude: z.number(),
   utc_offset_seconds: z.number(),
