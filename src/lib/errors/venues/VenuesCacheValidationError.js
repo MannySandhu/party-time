@@ -1,4 +1,4 @@
-import AppError from "./AppError.js"
+import AppError from "../AppError.js"
 
 class VenuesCacheValidationError extends AppError {
     constructor(message = "Venues data from cache failed validation", status=400){

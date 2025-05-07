@@ -1,33 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Location Fetcher</title>
+  <title>Live Check</title>
 </head>
 <body>
-  <h2>Fetching location...</h2>
-  <script>
-    window.onload = () => {
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-          const data = {
-            lat: position.coords.latitude,
-            lon: position.coords.longitude
-          };
-
-          await fetch('/api/v1/weather?skipCache=true', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-          });
-
-          document.body.innerHTML += `<p>Location sent! (${data.lat}, ${data.lon})</p>`;
-        });
-      } else {
-        document.body.innerHTML += "<p>Geolocation not supported.</p>";
-      }
-    };
-  </script>
+  <h2>PartyTime server running...</h2>
 </body>
 </html>

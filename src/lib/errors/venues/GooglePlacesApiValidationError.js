@@ -1,4 +1,4 @@
-import AppError from "./AppError.js"
+import AppError from "../AppError.js"
 
 class GooglePlacesApiValidationError extends AppError {
     constructor(message = "Google Places API data failed validation", status=400){

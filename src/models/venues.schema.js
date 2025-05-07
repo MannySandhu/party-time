@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const Venues = z.object({
+const VenuesSchema = z.object({
   business_status: z.string(),
   geometry: z.object({
     location: z.object({
@@ -22,6 +22,6 @@ const Venues = z.object({
 });
 
 export const VenuesCollectionSchema = z.object({
-  results: z.array(Venues),
+  results: z.array(VenuesSchema),
   status: z.string()
 });

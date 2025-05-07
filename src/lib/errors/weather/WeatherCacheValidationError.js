@@ -1,4 +1,4 @@
-import AppError from "./AppError.js"
+import AppError from "../AppError.js"
 
 class WeatherCacheValidationError extends AppError {
     constructor(message = "Weather data from cache failed validation", status=400){

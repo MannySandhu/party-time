@@ -1,4 +1,4 @@
-import AppError from "./AppError.js"
+import AppError from "../AppError.js"
 
 class OpenMeteoWeatherValidationError extends AppError {
     constructor(message = "Weather data from Open-Meteo API failed validation", status=400){

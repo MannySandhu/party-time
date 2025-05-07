@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const Weather = z.object({
+export const WeatherSchema = z.object({
   latitude: z.number(),
   longitude: z.number(),
   utc_offset_seconds: z.number(),
