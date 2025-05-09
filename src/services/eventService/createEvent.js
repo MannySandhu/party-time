@@ -5,7 +5,7 @@ import { EventSchema } from "../../models/event.schema.js";
 import { CreateEventValidationError } from '../../lib/errors/index.js';
 
 const createUserEvent = async (event) => {
-    const { coordinates } = event.data;
+    const { coordinates } = event;
 
     try {
         const weatherResponse = await getWeatherFromOpenMateo(
@@ -14,20 +14,20 @@ const createUserEvent = async (event) => {
 
         const venuesResponse = await getPlacesFromGooglePlacesAPI(
             coordinates,
-            event.data.radius,
-            event.data.preferences
+            event.radius,
+            event.preferences
         );
         
         const createdEvent = EventSchema.safeParse({
-            eventName: event.data.eventName,
-            location: event.data.location,
+            eventName: event.eventName,
+            location: event.location,
             coordinates: { lat: coordinates.lat, lng: coordinates.lng },
-            radius: event.data.radius,
-            date: event.data.date,
-            startTime: event.data.startTime,
-            endTime: event.data.endTime,
-            groupSize: event.data.groupSize,
-            preferences: event.data.preferences,
+            radius: event.radius,
+            date: event.date,
+            startTime: event.startTime,
+            endTime: event.endTime,
+            groupSize: event.groupSize,
+            preferences: event.preferences,
             weather: weatherResponse.data,
             venues: venuesResponse.data.results,
             finalized: false

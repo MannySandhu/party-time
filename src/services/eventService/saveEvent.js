@@ -4,7 +4,7 @@ import { EventModel } from "../../models/event.model.js";
 const saveUserEvent = async (event) => {
 
     try {
-        const eventModel = new EventModel(event.data);
+        const eventModel = new EventModel(event);
         await eventModel.validate();
         const savedEvent = await eventModel.save();
 

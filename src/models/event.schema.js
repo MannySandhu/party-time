@@ -20,3 +20,5 @@ export const EventSchema = z.object({
   weather: OpenMateoWeatherSchema.optional(),
   venues: z.array(VenuesSchema).optional()
 });
+
+export const UpdateEventSchema = EventSchema.partial();

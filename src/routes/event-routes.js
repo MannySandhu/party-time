@@ -4,14 +4,14 @@ import {
     getEvent,
     createEvent,
     saveEvent,
-    // updateEvent,
+    updateEvent,
     deleteEvent
 } from '../controllers/event-controller.js';
 
 router.get('/event/:id', getEvent);
 router.post('/event', createEvent);
 router.post('/event/confirm', saveEvent);
-// router.put('/event/:id', updateEvent);
+router.patch('/event/:id', updateEvent);
 router.delete('/event/:id', deleteEvent);
 
 export default router;
