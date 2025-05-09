@@ -12,10 +12,9 @@ const saveUserEvent = async (event) => {
         return { 'data': savedEvent, 'status': 201 };
 
     } catch (err) {
-        const status = err.response?.status || 500;
         const message = err.response?.data?.message || err.message || 'Failed to save event.';
         const error = new Error(message);
-        error.statusCode = status;
+        error.statusCode = err.response?.status || 500;
         throw error;
     }
 }

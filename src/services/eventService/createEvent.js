@@ -41,10 +41,9 @@ const createUserEvent = async (event) => {
         return { 'data': createdEvent.data, 'status': 200 };
 
     } catch (err) {
-        const status = err.response?.status || 500;
         const message = err.response?.data?.message || err.message || 'Failed to create event.';
         const error = new Error(message);
-        error.statusCode = status;
+        error.statusCode = err.response?.status || 500;
         throw error;
     }
 }
