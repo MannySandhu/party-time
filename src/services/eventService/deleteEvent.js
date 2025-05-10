@@ -1,4 +1,5 @@
 import logger from "../../lib/logger.js";
+import { formatEventLog } from "../../lib/LogFormat.js";
 import { EventModel } from "../../models/event.model.js";
 
 const deleteUserEvent = async (id) => {
@@ -6,7 +7,7 @@ const deleteUserEvent = async (id) => {
     try {
         const deletedEvent = await EventModel.findByIdAndDelete(id).lean();
         if (deletedEvent) {
-            logger.info(`Event deleted: ${deletedEvent._id} ${deletedEvent.eventName}`);
+            logger.info(`Event deleted: ${formatEventLog(deletedEvent)}`);
         }
         return { 'data': deletedEvent, 'status': 200 };
 

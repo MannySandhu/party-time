@@ -1,14 +1,19 @@
 import logger from "../../lib/logger.js";
+import { formatEventLog } from "../../lib/LogFormat.js";
 import { EventModel } from "../../models/event.model.js";
+import cacheService from "../cacheService.js";
 
 const saveUserEvent = async (event) => {
-
     try {
         const eventModel = new EventModel(event);
         await eventModel.validate();
         const savedEvent = await eventModel.save();
 
-        logger.info(`Event saved: "${savedEvent.eventName}" (ID: ${savedEvent._id}) for ${savedEvent.location}`);
+        logger.info(`Event saved: "${formatEventLog(savedEvent)}`);
+
+        const cacheKey = `event:${savedEvent._id}`;
+        cacheService.set(cacheKey, savedEvent.toObject());
+
         return { 'data': savedEvent, 'status': 201 };
 
     } catch (err) {

@@ -1,4 +1,5 @@
 import logger from '../../lib/logger.js';
+import { formatEventLog } from '../../lib/LogFormat.js';
 import { getWeatherFromOpenMateo } from "../WeatherService.js";
 import { getPlacesFromGooglePlacesAPI } from "../VenuesService.js";
 import { EventSchema } from "../../models/event.schema.js";
@@ -37,7 +38,7 @@ const createUserEvent = async (event) => {
             throw new CreateEventValidationError();
         }
 
-        logger.info(`Event created: ${createdEvent.data.eventName} at ${createdEvent.data.location} by user ${createdEvent.data.userId}`);
+        logger.info(`Event created: ${formatEventLog(createdEvent.data)}`);
         return { 'data': createdEvent.data, 'status': 200 };
 
     } catch (err) {
