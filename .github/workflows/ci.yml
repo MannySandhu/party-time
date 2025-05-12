@@ -15,6 +15,9 @@ jobs:
       OPEN_MATEO_WEATHER_URL: ${{ vars.OPEN_MATEO_WEATHER_URL }}
       GOOGLE_PLACES_API_URL: ${{ vars.GOOGLE_PLACES_API_URL }}
       GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
       NODE_ENV: test
       PORT: 3000
 
@@ -32,9 +35,6 @@ jobs:
 
     - name: Run ESLint
       run: npx eslint .
-
-    - name: Print environment variables
-      run: printenv | grep -i 'MONGODB\|OPEN_MATEO\|GOOGLE_PLACES'
-
+      
     - name: Run Tests
       run: npm test
