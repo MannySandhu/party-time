@@ -14,7 +14,7 @@ export const authGoogleUser = async (idToken) => {
         });
         const payload = ticket.getPayload();
         const { email, name, picture, sub: googleId } = payload;
-        
+
         let user = await UserModel.findOne({ googleId });
         if (!user) {
             user = await UserModel.create({ email, name, picture, googleId });
@@ -23,7 +23,7 @@ export const authGoogleUser = async (idToken) => {
         const token = jwt.sign(
             { userId: user._id, email: user.email },
             env.JWT_SECRET,
-            { expiresIn: '15m' }
+            { expiresIn: '1d' }
         );
 
         logger.info(`Token issued for user: ${user.email}`);
