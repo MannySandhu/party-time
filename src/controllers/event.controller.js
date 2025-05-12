@@ -48,7 +48,8 @@ export const getAllEvents = async (req, res, next) => {
     try {
         logger.info(`GET request to /api/v1/event.`);
 
-        const { userId } = req.query;
+        let { userId } = req.query;
+        userId = 'user001'
         const skipCache = req.query.skipCache === 'true';
         const response = await getAllUserEvents(userId, { skipCache });
 

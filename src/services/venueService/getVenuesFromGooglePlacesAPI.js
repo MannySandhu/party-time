@@ -1,13 +1,13 @@
-import { env } from "../config/env.js";
+import { env } from "../../config/env.js";
 import axios from "axios";
-import { GooglePlacesAPISchema } from "../models/venues.schema.js"
-import logger from "../lib/logger.js";
-import { logExternalResponse, logExternalError } from "../lib/logExternal.js";
-import { GooglePlacesApiValidationError } from "../lib/errors/index.js"
+import { GooglePlacesAPISchema } from "../../models/venues.schema.js"
+import logger from "../../lib/logger.js";
+import { logExternalResponse, logExternalError } from "../../lib/logExternal.js";
+import { GooglePlacesApiValidationError } from "../../lib/errors/index.js"
 const GOOGLE_PLACES_API_URL = env.GOOGLE_PLACES_API_URL ?? 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
 const GOOGLE_PLACES_API_KEY = env.GOOGLE_PLACES_API_KEY;
 
-export const getPlacesFromGooglePlacesAPI = async (coordinates, radius, preferences) => {
+export const getVenuesFromGooglePlacesAPI = async (coordinates, radius, preferences) => {
 
     const params = {
         location: `${coordinates.lat},${coordinates.lng}`,

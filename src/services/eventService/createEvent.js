@@ -1,24 +1,34 @@
 import logger from '../../lib/logger.js';
 import { formatEventLog } from '../../lib/LogFormat.js';
-import { getWeatherFromOpenMateo } from "../WeatherService.js";
-import { getPlacesFromGooglePlacesAPI } from "../VenuesService.js";
+import { getWeatherFromOpenMateoAPI } from "../weatherService/getWeatherFromOpenMateoAPI.js";
+import { getVenuesFromGooglePlacesAPI } from "../venueService/getVenuesFromGooglePlacesAPI.js";
 import { EventSchema } from "../../models/event.schema.js";
 import { CreateEventValidationError } from '../../lib/errors/index.js';
+import cacheService from '../cacheService.js';
 
-const createUserEvent = async (event) => {
-    const { coordinates } = event;
-
+const createUserEvent = async (event, { skipCache } = {}) => {
     try {
-        const weatherResponse = await getWeatherFromOpenMateo(
+        const { coordinates } = event;
+        const cacheKey = `event:${event.eventName},${event.location},${JSON.stringify(event.coordinates)}`;
+
+        if (!skipCache) {
+            const cachedEvent = await cacheService.get(cacheKey);
+            if (cachedEvent) {
+                return { data: cachedEvent, status: 200 };
+            }
+            logger.warn(`Cache miss for event:${event.eventName},${event.location}`);
+        }
+
+        const weatherResponse = await getWeatherFromOpenMateoAPI(
             coordinates
         );
 
-        const venuesResponse = await getPlacesFromGooglePlacesAPI(
+        const venuesResponse = await getVenuesFromGooglePlacesAPI(
             coordinates,
             event.radius,
             event.preferences
         );
-        
+
         const createdEvent = EventSchema.safeParse({
             eventName: event.eventName,
             location: event.location,
@@ -34,9 +44,11 @@ const createUserEvent = async (event) => {
             finalized: false
         });
 
-        if(!createdEvent.success){
+        if (!createdEvent.success) {
             throw new CreateEventValidationError();
         }
+
+        cacheService.set(cacheKey, createdEvent.data);
 
         logger.info(`Event created: ${formatEventLog(createdEvent.data)}`);
         return { 'data': createdEvent.data, 'status': 200 };

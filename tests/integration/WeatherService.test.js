@@ -1,5 +1,5 @@
 import nock from "nock";
-import { getWeatherFromOpenMateo } from "../../src/services/WeatherService";
+import { getWeatherFromOpenMateoAPI } from "../../src/services/weatherService/getWeatherFromOpenMateoAPI.js";
 import { OpenMateoWeatherSchema } from "../../src/models/weather.schema";
 
 describe('Weather Service', () => {
@@ -53,7 +53,7 @@ describe('Weather Service', () => {
     test('Retrieves open mateo weather with status 200', async () => {
     
       const coordinates = { lat: 51.4, lon: -0.22 }
-      const result = await getWeatherFromOpenMateo(coordinates);
+      const result = await getWeatherFromOpenMateoAPI(coordinates);
       const validated = OpenMateoWeatherSchema.safeParse(result.data);
 
       expect(result.status).toBe(200);

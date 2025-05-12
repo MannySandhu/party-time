@@ -11,12 +11,15 @@ export const envSchema = z.object({
     OPEN_MATEO_WEATHER_URL: z.string().url(),
     GOOGLE_PLACES_API_URL: z.string().url(),
     GOOGLE_PLACES_API_KEY: z.string(),
+    GOOGLE_CLIENT_ID: z.string(),
+    GOOGLE_CLIENT_SECRET: z.string(),
+    JWT_SECRET: z.string(),
     PORT: z.string().regex(/^\d+$/).default('3000')
-  });
+});
 
 const result = envSchema.safeParse(process.env);
 
-if(!result.success){
+if (!result.success) {
     logger.error('Invalid environment configuration', result.error.format());
     process.exit(1);
 }

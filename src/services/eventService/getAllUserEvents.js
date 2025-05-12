@@ -7,7 +7,7 @@ import { FetchEventListValidationError } from "../../lib/errors/index.js";
 const getUserEvent = async (userId, { skipCache } = {}) => {
     try {
         const cacheKey = `userEvents:${userId}`;
-
+        
         if (!skipCache) {
             const cachedEvent = await cacheService.get(cacheKey);
             if (cachedEvent) {
@@ -19,10 +19,11 @@ const getUserEvent = async (userId, { skipCache } = {}) => {
         logger.info(`Fetching fresh events list:${userId} from DB`);
         const fetchedEventsList = await EventModel.find().lean();
 
-
         if (!fetchedEventsList) {
-            throw new FetchEventListValidationError();
+            throw new FetchEventListValidationError(); //doesnt exist
         }
+
+        cacheService.set(cacheKey, fetchedEventsList);
 
         logger.info(`Events fetched: ${formatEventLog(fetchedEventsList, 3, userId)}`);
         return { data: fetchedEventsList, status: 200 };

@@ -7,7 +7,7 @@ import {
     saveEvent,
     updateEvent,
     deleteEvent
-} from '../controllers/event-controller.js';
+} from '../../controllers/event.controller.js';
 
 router.get('/event', getAllEvents);
 router.get('/event/:id', getEvent);

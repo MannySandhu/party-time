@@ -1,14 +1,14 @@
-import { env } from "../config/env.js";
+import { env } from "../../config/env.js";
 import axios from "axios";
-import { OpenMateoWeatherSchema } from "../models/weather.schema.js"
-import logger from "../lib/logger.js";
-import { logExternalResponse, logExternalError } from "../lib/logExternal.js";
-import { OpenMeteoAPIValidationError } from "../lib/errors/index.js"
+import { OpenMateoWeatherSchema } from "../../models/weather.schema.js"
+import logger from "../../lib/logger.js";
+import { logExternalResponse, logExternalError } from "../../lib/logExternal.js";
+import { OpenMeteoAPIValidationError } from "../../lib/errors/index.js"
 const OPEN_MATEO_WEATHER_URL = env.OPEN_MATEO_WEATHER_URL ?? 'https://api.open-meteo.com/v1/forecast';
 const OPEN_MATEO_WEATHER_URL_PARAMS = env.OPEN_MATEO_WEATHER_URL_PARAMS ?? 'temperature_2m_mean,precipitation_sum,windspeed_10m_max';
 const OPEN_MATEO_WEATHER_URL_TIMEZONE = env.OPEN_MATEO_WEATHER_URL_TIMEZONE ?? 'GMT';
 
-export const getWeatherFromOpenMateo = async (coordinates) => {
+export const getWeatherFromOpenMateoAPI = async (coordinates) => {
 
     const params = {
         latitude: coordinates.lat,
