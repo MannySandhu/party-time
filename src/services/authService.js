@@ -23,7 +23,7 @@ export const authGoogleUser = async (idToken) => {
         const token = jwt.sign(
             { userId: user._id, email: user.email },
             env.JWT_SECRET,
-            { expiresIn: '1d' }
+            { expiresIn: '7d' }
         );
 
         logger.info(`Token issued for user: ${user.email}`);
