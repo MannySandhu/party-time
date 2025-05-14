@@ -5,8 +5,9 @@ import cacheService from '../cacheService.js';
 import { FetchEventListValidationError } from "../../lib/errors/index.js";
 import { accessibleBy } from "@casl/mongoose";
 
-const getUserEvent = async (userId, ability, { skipCache } = {}) => {
+const getUserEvent = async (ability, { skipCache } = {}) => {
     try {
+        const userId = ability.user.id;
         const cacheKey = `userEvents:${userId}`;
         if (!skipCache) {
             const cachedEvent = await cacheService.get(cacheKey);
@@ -16,9 +17,9 @@ const getUserEvent = async (userId, ability, { skipCache } = {}) => {
             logger.warn(`Cache miss for user:${userId}`);
         }
 
-        logger.info(`Fetching fresh events list:${userId} from DB`);
-        // console.log('CASL filter:', accessibleBy(ability, 'read').Event);
-        const fetchedEventsList = await EventModel.find(accessibleBy(ability, 'read').Event).lean();
+        logger.info(`Fetching fresh events list: ${userId} from DB`);
+        console.log('query:', accessibleBy(ability, 'read').Event);
+        const fetchedEventsList = await EventModel.find({ userId: userId }).lean();
 
         if (!fetchedEventsList) {
             throw new FetchEventListValidationError();

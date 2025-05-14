@@ -49,11 +49,10 @@ export const saveEvent = async (req, res, next) => {
 export const getAllEvents = async (req, res, next) => {
     try {
         logger.info(`GET request to /api/v1/event.`);
-        const userId = req.user.id;
-        const ability = req.ability;
         const skipCache = req.query.skipCache === 'true';
-        const response = await getAllUserEvents(userId, ability, { skipCache });
-        console.log(JSON.stringify(req.ability.rules, null, 2));
+        const ability = req.ability;
+        const response = await getAllUserEvents(ability, { skipCache });
+        
         res.status(response.status || 200).json(response.data);
     } catch (error) {
         next(error);
