@@ -1,6 +1,5 @@
 import express from 'express';
 const router = express.Router();
-import authenticateToken from '../../middleware/AuthToken.js';
 import {
     getEvent,
     getAllEvents,
@@ -11,10 +10,10 @@ import {
 } from '../../controllers/event.controller.js';
 
 router.post('/event', createEvent);
-router.get('/event', authenticateToken, getAllEvents);
-router.get('/event/:id', authenticateToken, getEvent);
-router.post('/event/confirm', authenticateToken, saveEvent);
-router.patch('/event/:id', authenticateToken, updateEvent);
-router.delete('/event/:id', authenticateToken, deleteEvent);
+router.get('/event', getAllEvents);
+router.get('/event/:id', getEvent);
+router.post('/event/confirm', saveEvent);
+router.patch('/event/:id', updateEvent);
+router.delete('/event/:id', deleteEvent);
 
 export default router;

@@ -5,9 +5,19 @@ import { getVenuesFromGooglePlacesAPI } from "../venueService/getVenuesFromGoogl
 import { EventSchema } from "../../models/event.schema.js";
 import { CreateEventValidationError } from '../../lib/errors/index.js';
 import cacheService from '../cacheService.js';
+import { EventModel } from '../../models/event.model.js';
+import { enforceAbility } from '../../lib/enforceAbility.js';
 
-const createUserEvent = async (event, { skipCache } = {}) => {
+const createUserEvent = async (ability, event, { skipCache } = {}) => {
     try {
+        const eventModel = new EventModel({
+            userId: ability.user.id
+        });
+        enforceAbility(ability, 'create', {
+            type: 'Event',
+            data: eventModel
+        });
+
         const { coordinates } = event;
         const cacheKey = `event:${event.eventName},${event.location},${JSON.stringify(event.coordinates)}`;
 
@@ -17,7 +27,7 @@ const createUserEvent = async (event, { skipCache } = {}) => {
                 return { data: cachedEvent, status: 200 };
             }
             logger.warn(`Cache miss for event:${event.eventName},${event.location}`);
-        }
+        };
 
         const weatherResponse = await getWeatherFromOpenMateoAPI(
             coordinates
@@ -46,7 +56,7 @@ const createUserEvent = async (event, { skipCache } = {}) => {
 
         if (!createdEvent.success) {
             throw new CreateEventValidationError();
-        }
+        };
 
         cacheService.set(cacheKey, createdEvent.data);
 

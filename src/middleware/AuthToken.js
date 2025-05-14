@@ -1,7 +1,4 @@
-import { env } from '../config/env.js';
-import jwt from 'jsonwebtoken';
-
-const JWT_SECRET = env.JWT_SECRET;
+import { validateSessionToken } from '../lib/validateSessionToken.js';
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -11,12 +8,12 @@ const authenticateToken = (req, res, next) => {
     return res.status(401).json({ error: 'Token missing' });
   }
 
-  jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.status(403).json({ error: 'Invalid token' });
-
-    req.user = user;
+  try {
+    req.user = validateSessionToken(token);
     next();
-  });
+  } catch {
+    return res.status(401).json({ error: 'Invalid token' });
+  }
 };
 
 export default authenticateToken;

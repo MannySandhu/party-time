@@ -1,5 +1,5 @@
 import logger from "../lib/logger.js";
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 import createUserEvent from "../services/eventService/createEvent.js";
 import saveUserEvent from "../services/eventService/saveEvent.js";
 import getAllUserEvents from "../services/eventService/getAllUserEvents.js";
@@ -13,13 +13,13 @@ export const createEvent = async (req, res, next) => {
     try {
         logger.info(`POST request to /api/v1/event.`);
         const skipCache = req.query.skipCache === 'true';
-
+        const ability = req.ability;
         const validatedEvent = EventSchema.safeParse(req.body);
 
         if (!validatedEvent.success) {
             throw new CreateEventValidationError();
         }
-        const response = await createUserEvent(validatedEvent.data, { skipCache });
+        const response = await createUserEvent(ability, validatedEvent.data, { skipCache });
 
         res.status(response.status || 200).json(response.data);
 
@@ -31,12 +31,14 @@ export const createEvent = async (req, res, next) => {
 export const saveEvent = async (req, res, next) => {
     try {
         logger.info(`POST request to /api/v1/event/confirm.`);
-        const validatedEvent = EventSchema.safeParse(req.body);
+        const id = req.user.id;
+        const ability = req.ability;
 
+        const validatedEvent = EventSchema.safeParse(req.body);
         if (!validatedEvent.success) {
             throw new CreateEventValidationError();
         }
-        const response = await saveUserEvent(validatedEvent.data);
+        const response = await saveUserEvent(id, ability, validatedEvent.data);
 
         res.status(response.status || 201).json(response.data);
     } catch (error) {
@@ -47,12 +49,11 @@ export const saveEvent = async (req, res, next) => {
 export const getAllEvents = async (req, res, next) => {
     try {
         logger.info(`GET request to /api/v1/event.`);
-
-        let { userId } = req.query;
-        userId = 'user001'
+        const userId = req.user.id;
+        const ability = req.ability;
         const skipCache = req.query.skipCache === 'true';
-        const response = await getAllUserEvents(userId, { skipCache });
-
+        const response = await getAllUserEvents(userId, ability, { skipCache });
+        console.log(JSON.stringify(req.ability.rules, null, 2));
         res.status(response.status || 200).json(response.data);
     } catch (error) {
         next(error);
@@ -64,13 +65,13 @@ export const getEvent = async (req, res, next) => {
         logger.info(`GET request to /api/v1/event.`);
         const skipCache = req.query.skipCache === 'true';
         const { id } = req.params;
+        const ability = req.ability;
+        
+        // if (!mongoose.Types.ObjectId.isValid(id)) {
+            
+        // }
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            logger.warn(`Invalid MongoDB ObjectId received: ${id}`);
-            // throw createError(400, 'Invalid event ID format');
-        }
-
-        const response = await getUserEvent(id, { skipCache });
+        const response = await getUserEvent(id, ability, { skipCache });
 
         res.status(response.status || 200).json(response.data);
     } catch (error) {
@@ -82,10 +83,11 @@ export const updateEvent = async (req, res, next) => {
     try {
         logger.info(`PATCH request to /api/v1/event.`);
         const { id } = req.params;
+        const ability = req.ability;
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            // throw custom error
-        }
+        // if (!mongoose.Types.ObjectId.isValid(id)) {
+            
+        // }
 
         const validatedUpdate = UpdateEventSchema.safeParse(req.body);
 
@@ -93,7 +95,7 @@ export const updateEvent = async (req, res, next) => {
             throw new CreateEventValidationError();
         }
 
-        const response = await updateUserEvent(id, validatedUpdate.data);
+        const response = await updateUserEvent(id, ability, validatedUpdate.data);
 
         res.status(response.status || 200).json({ message: 'Event updated.' });
     } catch (error) {
@@ -105,11 +107,13 @@ export const deleteEvent = async (req, res, next) => {
     try {
         logger.info(`DELETE request to /api/v1/event.`);
         const { id } = req.params;
+        const ability = req.ability;
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            // throw custom error
-        }
-        const response = await deleteUserEvent(id);
+        // if (!mongoose.Types.ObjectId.isValid(id)) {
+            
+        // }
+
+        const response = await deleteUserEvent(id, ability);
 
         res.status(response.status || 200).json({ message: 'Event deleted successfully.' });
     } catch (error) {

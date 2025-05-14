@@ -1,12 +1,10 @@
 import mongoose from 'mongoose';
 
-// Coordinates subdocument
 const CoordinatesSchema = new mongoose.Schema({
   lat: { type: Number, required: true },
   lng: { type: Number, required: true }
 }, { _id: false });
 
-// Weather subdocument (OpenMeteo)
 const WeatherSchema = new mongoose.Schema({
   latitude: Number,
   longitude: Number,
@@ -28,7 +26,6 @@ const WeatherSchema = new mongoose.Schema({
   }
 }, { _id: false });
 
-// Venue subdocument (Google Places)
 const VenueSchema = new mongoose.Schema({
   business_status: String,
   geometry: {
@@ -50,8 +47,22 @@ const VenueSchema = new mongoose.Schema({
   }]
 }, { _id: false });
 
-// Event schema
+const CollaboratorSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  role: { type: String, enum: ['guest', 'viewer', 'collaborator'], default: 'guest' },
+  editable: { type: Boolean, default: false },
+  collab: { type: Boolean, default: false }
+}, { _id: false });
+
+const TokenAccessSchema = new mongoose.Schema({
+  tokenId: { type: String },
+  role: { type: String, enum: ['guest', 'viewer'] },
+  collab: { type: Boolean },
+  editable: { type: Boolean }
+}, { _id: false });
+
 const EventSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   eventName: { type: String, required: true },
   location: { type: String, required: true },
   coordinates: { type: CoordinatesSchema, required: true },
@@ -63,7 +74,12 @@ const EventSchema = new mongoose.Schema({
   endTime: { type: String, required: true },
   finalized: { type: Boolean, default: false },
   weather: { type: WeatherSchema },
-  venues: { type: [VenueSchema] }
+  venues: { type: [VenueSchema] },
+
+  editableByGuests: { type: Boolean, default: false },
+  collaborators: [CollaboratorSchema],
+  sharedViaLink: { type: Boolean, default: false },
+  tokenAccess: [TokenAccessSchema]
 }, { timestamps: true });
 
 export const EventModel = mongoose.model('Event', EventSchema);

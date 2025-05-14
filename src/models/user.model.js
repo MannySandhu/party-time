@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema(
   {
@@ -20,7 +20,18 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true
-    }
+    },
+    role: {
+      type: String,
+      enum: ['user', 'guest', 'viewer', 'admin'],
+      default: 'user'
+    },
+    invitedEvents: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Event'
+      }
+    ]
   },
   { timestamps: true }
 );

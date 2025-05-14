@@ -3,11 +3,11 @@ import { formatEventLog } from "../../lib/LogFormat.js";
 import { EventModel } from "../../models/event.model.js";
 import cacheService from '../cacheService.js';
 import { FetchEventListValidationError } from "../../lib/errors/index.js";
+import { accessibleBy } from "@casl/mongoose";
 
-const getUserEvent = async (userId, { skipCache } = {}) => {
+const getUserEvent = async (userId, ability, { skipCache } = {}) => {
     try {
         const cacheKey = `userEvents:${userId}`;
-        
         if (!skipCache) {
             const cachedEvent = await cacheService.get(cacheKey);
             if (cachedEvent) {
@@ -17,10 +17,11 @@ const getUserEvent = async (userId, { skipCache } = {}) => {
         }
 
         logger.info(`Fetching fresh events list:${userId} from DB`);
-        const fetchedEventsList = await EventModel.find().lean();
+        // console.log('CASL filter:', accessibleBy(ability, 'read').Event);
+        const fetchedEventsList = await EventModel.find(accessibleBy(ability, 'read').Event).lean();
 
         if (!fetchedEventsList) {
-            throw new FetchEventListValidationError(); //doesnt exist
+            throw new FetchEventListValidationError();
         }
 
         cacheService.set(cacheKey, fetchedEventsList);
