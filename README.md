@@ -14,4 +14,4 @@ PDF generation for saved plans
 
 Modular Express structure, clean logging, error handling
 
-Future scope: AI crawl host, venue dashboards, real-time updates
+Future scope: crawl hosting, venue dashboards, real-time updates, AI-powered
